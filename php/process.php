@@ -1,26 +1,31 @@
-<?php
-	
-	$con=mysqli_connect("localhost","root","","login");
+package hello;
 
-	// Check connection
-	if (mysqli_connect_errno()) {
-	  echo "Failed to connect to MySQL: " . mysqli_connect_error();
-	}
+import static org.hamcrest.Matchers.equalTo;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-	// escape variables for security
-	$username = mysqli_real_escape_string($con, $_POST['user']);
-	$password = mysqli_real_escape_string($con, $_POST['pass']);
-	
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-	$sql="select * from users where username='$username' and password = '$password' ";
-    
+@RunWith(SpringRunner.class)
+@SpringBootTest
+@AutoConfigureMockMvc
+public class HelloControllerTest {
 
-	if (!mysqli_query($con,$sql)) {
-	  die('Error: ' . mysqli_error($con));
-	}
-	echo "Login Success";
+    @Autowired
+    private MockMvc mvc;
 
-	mysqli_close($con);
-
-
-?>
+    @Test
+    public void getHello() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(equalTo("Greetings from Spring Boot!")));
+    }
+}
