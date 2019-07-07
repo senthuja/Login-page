@@ -7,10 +7,10 @@
 <body>
 	<div id="frm">
 		<form action="process.php" method="POST">
+			<h1>Welcome to Login Page</h1>
 			<p>
 				<label>Username:</label>
-				<input type="text" id="user" name="user" />
-			</p>
+				<button name="login" type="submit"></button>
 			<p>
 				<label>Password:</label>
 				<input type="password" id="pass" name="pass" />
